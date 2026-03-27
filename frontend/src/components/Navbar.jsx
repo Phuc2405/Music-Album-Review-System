@@ -35,17 +35,23 @@ const Navbar = () => {
               type="text"
               placeholder="Search..."
               className="w-full px-4 py-2 text-gray-900 bg-blue-50 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-300 focus:bg-white transition-all duration-300"
+              onKeyDown={(e) => {
+                // Navigate to the search results page when the Enter key is pressed
+                if (e.key === 'Enter' && e.target.value.trim() !== '') {
+                  navigate(`/search?q=${e.target.value}`);
+                }
+              }}
             />
           </div>
         )}
       </div>
 
-      {/* User Authentication*/}
+      {/* User Authentication */}
       <div className="flex items-center gap-4">
         {user ? (
           <button
             onClick={handleLogout}
-            className="bg-red-5S00 px-5 py-2 rounded-full font-medium hover:bg-red-600 transition-colors shadow-sm"
+            className="bg-red-500 px-5 py-2 rounded-full font-medium hover:bg-red-600 transition-colors shadow-sm"
           >
             Logout
           </button>
