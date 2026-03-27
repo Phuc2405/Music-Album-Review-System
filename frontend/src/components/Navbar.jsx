@@ -40,12 +40,12 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* 3. Phần Phải: Tuỳ chọn Auth */}
+      {/* User Authentication*/}
       <div className="flex items-center gap-4">
         {user ? (
           <button
             onClick={handleLogout}
-            className="bg-red-500 px-5 py-2 rounded-full font-medium hover:bg-red-600 transition-colors shadow-sm"
+            className="bg-red-5S00 px-5 py-2 rounded-full font-medium hover:bg-red-600 transition-colors shadow-sm"
           >
             Logout
           </button>
