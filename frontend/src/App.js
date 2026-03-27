@@ -6,6 +6,8 @@ import Register from './pages/Register';
 import Home from './pages/Home';
 import SearchAlbumResults from './pages/SearchAlbumResults';
 import { AuthProvider } from './context/AuthContext';
+import AlbumDetails from './pages/AlbumDetails';
+
 function App() {
   return (
     <AuthProvider>
@@ -15,10 +17,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-
-          
-          {/* ADDED: Route for the search results page */}
           <Route path="/search" element={<SearchAlbumResults />} />
+          <Route path="/album/:id" element={<AlbumDetails />} />
         </Routes>
       </Router>
     </AuthProvider>
@@ -26,11 +26,3 @@ function App() {
 }
 
 export default App;
-console.log({
-  Navbar,
-  Home,
-  Login,
-  Register,
-  SearchAlbumResults
-});
-

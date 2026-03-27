@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
 const albumDatabase = [
   { 
@@ -54,6 +54,7 @@ const albumDatabase = [
 
 const SearchAlbumResults = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate(); // 1. Initialize the navigate hook
   const query = searchParams.get('q') || 'Eter'; 
   const [results, setResults] = useState([]);
 
@@ -91,6 +92,7 @@ const SearchAlbumResults = () => {
             results.map((item) => (
               <div 
                 key={item.id} 
+                onClick={() => navigate(`/album/${item.id}`)} // 2. Add the click handler here
                 className="group flex gap-5 p-5 bg-gray-900/50 rounded-xl cursor-pointer hover:bg-gray-800 transition-all duration-300 border border-transparent hover:border-gray-700"
               >
                 {/* Album Art */}
