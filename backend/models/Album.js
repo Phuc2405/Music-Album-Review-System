@@ -2,17 +2,19 @@ const mongoose = require("mongoose");
 
 const albumSchema = new mongoose.Schema(
   {
-    albumName: { type: String, required: true },
+    // Album Name
+    title: { type: String, required: true },
 
-    // Foreign key: link towards Artist
-    artistID: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Artist",
-      required: true,
-    },
+    // Artist Name (Saved as a simple string, removed the ObjectId reference)
+    artist: { type: String, required: true },
 
-    albumDetails: { type: String },
-    singleDetails: { type: String },
+    // Release Year
+    releaseYear: { type: Number },
+
+    // Tracklist (An array of strings)
+    tracks: [{ type: String }], 
+
+    // Cover Image Link
     coverImageUrl: { type: String },
   },
   { timestamps: true }

@@ -54,19 +54,34 @@ const albumDatabase = [
 
 const SearchAlbumResults = () => {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate(); // 1. Initialize the navigate hook
+  const navigate = useNavigate(); 
   const query = searchParams.get('q') || 'Eter'; 
+  
   const [results, setResults] = useState([]);
+  // NEW: Add a searching state to handle the transition smoothly
+  const [isSearching, setIsSearching] = useState(true);
 
   useEffect(() => {
+    // 1. Immediately set to searching when query changes
+    setIsSearching(true);
+
     if (query.trim() === '') {
       setResults([]);
+      setIsSearching(false);
       return;
     }
-    const filteredData = albumDatabase.filter((album) =>
-      album.title.toLowerCase().includes(query.toLowerCase())
-    );
-    setResults(filteredData);
+
+    // 2. Simulate a slight network delay (prevents the jarring glitch and looks professional)
+    const timer = setTimeout(() => {
+      const filteredData = albumDatabase.filter((album) =>
+        album.title.toLowerCase().includes(query.toLowerCase())
+      );
+      setResults(filteredData);
+      setIsSearching(false); // Stop loading after data is ready
+    }, 400); // 400ms delay
+
+    // Cleanup the timer if the user types quickly
+    return () => clearTimeout(timer);
   }, [query]);
 
   return (
@@ -75,7 +90,11 @@ const SearchAlbumResults = () => {
         
         {/* Search Header */}
         <div className="mb-8 border-b border-gray-800 pb-4">
-          {query ? (
+          {isSearching ? (
+            <h2 className="text-3xl font-bold tracking-tight text-gray-500 animate-pulse">
+              Searching...
+            </h2>
+          ) : query ? (
             <h2 className="text-3xl font-bold tracking-tight text-white">
               {results.length} results for "{query}"
             </h2>
@@ -86,13 +105,23 @@ const SearchAlbumResults = () => {
           )}
         </div>
 
-        {/* Unified Results Grid */}
+        {/* Unified Results Area */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {results.length > 0 ? (
+          
+          {/* STATE 1: LOADING */}
+          {isSearching ? (
+            <div className="col-span-full flex flex-col items-center justify-center py-20">
+              <div className="w-10 h-10 border-4 border-gray-800 border-t-orange-500 rounded-full animate-spin mb-4"></div>
+              <p className="text-gray-400 text-lg animate-pulse">Finding albums...</p>
+            </div>
+          ) 
+          
+          /* STATE 2: HAS RESULTS */
+          : results.length > 0 ? (
             results.map((item) => (
               <div 
                 key={item.id} 
-                onClick={() => navigate(`/album/${item.id}`)} // 2. Add the click handler here
+                onClick={() => navigate(`/album/${item.id}`)}
                 className="group flex gap-5 p-5 bg-gray-900/50 rounded-xl cursor-pointer hover:bg-gray-800 transition-all duration-300 border border-transparent hover:border-gray-700"
               >
                 {/* Album Art */}
@@ -110,7 +139,6 @@ const SearchAlbumResults = () => {
                     {item.title}
                   </h3>
                   
-                  {/* Updated Artist Name Style */}
                   <p className="text-slate-300 font-medium text-sm mt-1 truncate tracking-wide group-hover:text-white transition-colors">
                     {item.artist}
                   </p>
@@ -137,7 +165,10 @@ const SearchAlbumResults = () => {
                 </div>
               </div>
             ))
-          ) : (
+          ) 
+          
+          /* STATE 3: NO RESULTS */
+          : (
             query && (
               <div className="col-span-full text-center py-16 bg-gray-900/30 rounded-xl border border-gray-800">
                 <p className="text-gray-400 text-lg">
