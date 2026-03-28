@@ -24,6 +24,7 @@ const registerUser = async (req, res) => {
         });
 
         res.status(201).json({
+            id: user.id,
             userID: user.userID,
             nickname: user.nickname,
             email: user.email,
@@ -51,6 +52,7 @@ const loginUser = async (req, res) => {
         }
 
         res.json({
+            id: user.id,
             userID: user.userID,
             nickname: user.nickname,
             email: user.email,
