@@ -1,7 +1,7 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const connectDB = require("./config/db");
+const express = require('express');
+const { registerUser, loginUser } = require('../controllers/authController');
+const protect = require('../middleware/authMiddleware'); 
+const router = express.Router();
 
 dotenv.config();
 
