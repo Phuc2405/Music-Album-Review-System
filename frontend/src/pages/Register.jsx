@@ -74,7 +74,7 @@ const Register = () => {
           />
 
           <h1 className="text-3xl md:text-4xl font-black tracking-widest text-center mb-8 text-white uppercase drop-shadow-sm">
-            Register
+            Sign Up
           </h1>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
@@ -209,7 +209,7 @@ const Register = () => {
               to="/login"
               className="text-white font-semibold hover:text-orange-500 transition-colors underline decoration-gray-600 underline-offset-4 hover:decoration-orange-500"
             >
-              Log in
+              Login
             </Link>
           </div>
         </div>
