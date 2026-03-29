@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axiosInstance from '../axiosConfig';
+import { useAuth } from '../context/AuthContext'; // Thêm import AuthContext
 
 const Register = () => {
   const [formData, setFormData] = useState({ 
@@ -9,6 +10,8 @@ const Register = () => {
     password: '',
     confirmPassword: ''
   });
+  
+  const { login } = useAuth(); // Lấy hàm login từ context
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -21,18 +24,27 @@ const Register = () => {
     }
 
     try {
-      // We only send the required fields to the backend (excluding confirmPassword)
       const payload = {
         nickname: formData.nickname,
         email: formData.email,
-        password: formData.password
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+        userID: `USER_${Date.now()}`,               
+        type: 'user'
       };
 
-      await axiosInstance.post('/api/auth/register', payload);
-      alert('Registration successful. Please log in.');
-      navigate('/login');
+      // Nhận response từ server
+      const response = await axiosInstance.post('/api/auth/register', payload);
+      
+      // Tự động đăng nhập user bằng data/token vừa nhận được
+      login(response.data);
+      
+      // Chuyển hướng thẳng vào trang chính
+      navigate('/tasks'); 
+      
     } catch (error) {
-      alert('Registration failed. Please try again.');
+      console.error("Lỗi đăng ký:", error.response?.data);
+      alert(error.response?.data?.message || 'Registration failed. Please try again.');
     }
   };
 
