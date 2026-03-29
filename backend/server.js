@@ -21,6 +21,9 @@ if (require.main === module) {
     const PORT = process.env.PORT || 5001;
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   }
+app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/albums", require("./routes/albumRoutes"));
+app.use("/api/reviews", require("./routes/reviewRoutes"));
 
 
 module.exports = app
