@@ -124,17 +124,27 @@ const AlbumDetails = () => {
               Join the Felix Music community to share your thoughts.
             </p>
             <div className="flex flex-col gap-3">
-              <Link
+              <Link 
                 to="/login"
-                className="bg-orange-500 py-3 rounded-xl font-bold hover:bg-orange-600 transition-colors"
+                onClick={() => setShowLoginModal(false)} 
+                className="block text-center w-full py-3.5 bg-orange-500 hover:bg-orange-400 text-white font-bold rounded-xl transition-all text-lg"
               >
                 Login
               </Link>
-              <button
-                onClick={() => setShowModal(false)}
-                className="text-gray-500 text-sm hover:text-white"
+              
+              <Link 
+                to="/register" 
+                onClick={() => setShowLoginModal(false)} 
+                className="block text-center w-full py-3.5 bg-[#333] hover:bg-[#444] text-white font-bold rounded-xl transition-all text-lg"
               >
-                Close
+                Sign Up
+              </Link>
+              
+              <button 
+                onClick={() => setShowLoginModal(false)} 
+                className="mt-3 text-gray-500 hover:text-white transition-colors text-sm font-medium mx-auto"
+              >
+                Maybe later
               </button>
             </div>
           </div>
