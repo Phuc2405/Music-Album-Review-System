@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 const Home = () => {
@@ -61,36 +61,6 @@ const Home = () => {
           </div>
         </form>
       </div>
-
-      {/* Modern Call to Action Footer */}
-      <div className="w-full max-w-4xl px-6 pb-12 z-10">
-        <div className="bg-[#121212] border border-gray-800 rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between shadow-2xl gap-8">
-          
-          <div className="text-center md:text-left">
-            <h3 className="text-2xl font-bold text-white mb-2">Want to write a review?</h3>
-            <p className="text-gray-500 text-lg">
-              Join the community <span className="text-orange-500 font-semibold">now</span> and share your thoughts.
-            </p>
-          </div>
-          
-          <div className="flex gap-4 w-full md:w-auto">
-            <Link 
-              to="/login" 
-              className="flex-1 md:flex-none bg-orange-500 hover:bg-orange-400 text-white px-8 py-3.5 rounded-xl font-bold transition-all text-center text-lg active:scale-95 shadow-[0_0_15px_rgba(249,115,22,0.15)]"
-            >
-              Login
-            </Link>
-            <Link 
-              to="/register" 
-              className="flex-1 md:flex-none bg-[#333] hover:bg-[#444] text-white px-8 py-3.5 rounded-xl font-bold transition-all text-center text-lg active:scale-95"
-            >
-              Sign Up
-            </Link>
-          </div>
-
-        </div>
-      </div>
-
     </div>
   );
 };
