@@ -6,15 +6,28 @@ const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
 };
 
+// REGISTER
 const registerUser = async (req, res) => {
-    const { userID, nickname, email, password, type } = req.body;
+    const { userID, nickname, email, password, confirmPassword, type } = req.body;
 
     try {
-        const userExists = await User.findOne({ email });
-        if (userExists) {
-            return res.status(400).json({ message: 'User already exists' });
+        // Check missing fields
+        if (!userID || !nickname || !email || !password || !confirmPassword || !type) {
+            return res.status(400).json({ message: 'All fields are required' });
         }
 
+        // Check password match
+        if (password !== confirmPassword) {
+            return res.status(400).json({ message: 'Passwords do not match' });
+        }
+
+        // Check email exists
+        const userExists = await User.findOne({ email });
+        if (userExists) {
+            return res.status(400).json({ message: 'Email already exists' });
+        }
+
+        // Create user
         const user = await User.create({
             userID,
             nickname,
@@ -37,10 +50,16 @@ const registerUser = async (req, res) => {
     }
 };
 
+// LOGIN
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     try {
+        // Check missing fields
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Email and password are required' });
+        }
+
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(401).json({ message: 'Invalid email or password' });
