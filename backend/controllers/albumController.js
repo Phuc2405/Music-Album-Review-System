@@ -1,43 +1,28 @@
-const Album = require("../models/Album");
-//This is to browse/list album feature
-const getAllAlbums = async (req, res) => {
-  try {
-    const albums = await Album.find();
-    res.json(albums);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+const Album = require("../models/Album")
 
-//This is to see album details
-const getAlbumById = async (req, res) => {
-  try {
-    const album = await Album.findById(req.params.id)       
-    .populate("artistID", "artistName");
-    if (!album) return res.status(404).json({ message: "Album not found" });
-
+const getAlbumById= async (req, res)=>{
+  try{
+    const album =await Album.findById(req.params.id);
+    if (!album) return res.status(404).json({ message: "Album Not found"});
     res.json(album);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({message:error.message});
   }
 };
-//This is to search album
-const searchAlbums = async (req, res) => {
-  const { keyword } = req.query;
+const searchAlbums = async(req,res)=>{
   try {
-    const albums = await Album.find({
-      $or: [
-        { albumName: { $regex: keyword, $options: "i" } },
-      ],
+    const query = req.query.q;
+    if (!query || query.trim()===""){
+      return res.status(200).json([]);
+    }
+    const searchTerm= query.trim();
+    const albums= await Album.find({
+      title: {$regex: searchTerm, $options: "i"},
     });
-
-    res.json(albums);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(200).json(albums);
+  } catch(error) {
+    console.error("Search error:",error);
+    res.status(500).json({message:error.message});
   }
 };
-module.exports = {
-  getAllAlbums,
-  getAlbumById,
-  searchAlbums,
-};
+module.exports={getAlbumById,searchAlbums};
