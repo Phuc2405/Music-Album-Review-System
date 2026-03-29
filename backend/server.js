@@ -12,7 +12,7 @@ app.use(express.json());
 
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/albums", require("./routes/albumRoutes"));
-app.use("/api/reviews", require("./routes/reviewRoutes"));
+//app.use("/api/reviews", require("./routes/reviewRoutes"));
 
 // Start server
 if (require.main === module) {
