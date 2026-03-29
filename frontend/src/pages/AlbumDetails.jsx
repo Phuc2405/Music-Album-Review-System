@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 // MOCK DATABASE
 const albumDatabase = [
   { 
@@ -146,13 +146,26 @@ const AlbumDetails = () => {
             </p>
             
             <div className="flex flex-col gap-3">
-              <button onClick={() => setShowLoginModal(false)} className="w-full py-3.5 bg-orange-500 hover:bg-orange-400 text-white font-bold rounded-xl transition-all text-lg active:scale-95">
+              <Link 
+                to="/login"
+                onClick={() => setShowLoginModal(false)} 
+                className="block text-center w-full py-3.5 bg-orange-500 hover:bg-orange-400 text-white font-bold rounded-xl transition-all text-lg"
+              >
                 Login
-              </button>
-              <button onClick={() => setShowLoginModal(false)} className="w-full py-3.5 bg-[#333] hover:bg-[#444] text-white font-bold rounded-xl transition-all text-lg active:scale-95">
+              </Link>
+              
+              <Link 
+                to="/register" 
+                onClick={() => setShowLoginModal(false)} 
+                className="block text-center w-full py-3.5 bg-[#333] hover:bg-[#444] text-white font-bold rounded-xl transition-all text-lg"
+              >
                 Sign Up
-              </button>
-              <button onClick={() => setShowLoginModal(false)} className="mt-3 text-gray-500 hover:text-white transition-colors text-sm font-medium mx-auto">
+              </Link>
+              
+              <button 
+                onClick={() => setShowLoginModal(false)} 
+                className="mt-3 text-gray-500 hover:text-white transition-colors text-sm font-medium mx-auto"
+              >
                 Maybe later
               </button>
             </div>
@@ -198,14 +211,14 @@ const AlbumDetails = () => {
             <div className="flex flex-col md:flex-row gap-10 mb-10 border-b border-gray-800/50 pb-12">
                
                <div className="min-w-[220px] text-center md:text-left flex flex-col items-center md:items-start">
-                 {/* Đồng bộ font chữ in hoa, màu xám */}
+                
                  <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-6">Community Rating</h3>
                  <div className="flex mb-3"><StarRating rating={4.5} className="w-10 h-10" /></div>
                  <p className="text-gray-400 font-medium text-lg">{album.totalRatings} <span className="text-sm font-normal text-gray-600 block">total reviews</span></p>
                </div>
 
                <div className="flex-1 flex flex-col gap-5 w-full">
-                 {/* Đồng bộ font chữ in hoa, màu xám */}
+                
                  <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-6">Rating Distribution</h3>
                  {album.ratingBreakdown.map((row, idx) => (
                    <div key={idx} className="flex items-center gap-5 text-sm group">
