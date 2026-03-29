@@ -4,7 +4,6 @@ import axiosInstance from '../axiosConfig';
 
 const Register = () => {
   const [formData, setFormData] = useState({ 
-    name: '', 
     nickname: '', 
     email: '', 
     password: '',
@@ -24,7 +23,6 @@ const Register = () => {
     try {
       // We only send the required fields to the backend (excluding confirmPassword)
       const payload = {
-        name: formData.name,
         nickname: formData.nickname,
         email: formData.email,
         password: formData.password
@@ -70,22 +68,6 @@ const Register = () => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
-            
-            {/* Name Input */}
-            <div className="flex items-center bg-black/40 rounded-xl p-4 border border-white/10 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 transition-all duration-300 group">
-              {/* User Icon */}
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-gray-400 group-focus-within:text-orange-500 transition-colors flex-shrink-0">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-              </svg>
-              <input
-                type="text"
-                placeholder="Full Name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="bg-transparent border-none outline-none text-white ml-4 w-full placeholder-gray-400"
-                required
-              />
-            </div>
 
             {/* Nickname Input & Note */}
             <div className="flex flex-col">
