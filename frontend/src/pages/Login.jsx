@@ -15,7 +15,13 @@ const Login = () => {
       login(response.data);
       navigate('/'); 
     } catch (error) {
-      alert('Login failed. Please try again.');
+      console.error("Login Error:", error);
+      const message =
+        error.response?.data?.message ||
+        error.response?.statusText ||
+        error.message ||
+        "Login failed. Please try again.";
+      alert(message);
     }
   };
 
