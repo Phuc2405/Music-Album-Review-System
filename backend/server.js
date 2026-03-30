@@ -9,9 +9,12 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use('/api/auth', require('./routes/authRoutes'));
 
-// Export the app object for testing
+app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/albums", require("./routes/albumRoutes"));
+app.use("/api/reviews", require("./routes/reviewRoutes"));
+
+// Start server
 if (require.main === module) {
   connectDB();
   const PORT = process.env.PORT || 5001;

@@ -1,19 +1,19 @@
 const Review = require("../models/Review");
 const Album = require("../models/Album");
 
-// GET REVIEW HISTORY OF CURRENT USER
-// IF GUEST IN THIS URL THEN BLOCK
-const getReviewDetails = async (req, res) => {
+// GET MY REVIEWS (authenticated user only)
+const getMyReviews = async (req, res) => {
   try {
     if (!req.user) {
       return res
         .status(401)
-        .json({ message: "You must be logged in to view your review history" });
+        .json({ message: "You must be logged in to view your reviews" });
     }
 
     const reviews = await Review.find({ userID: req.user.id })
-      .populate("albumID", "title artist")
-      .sort({ reviewDate: -1 });
+      .populate("albumID", "title artist coverImageUrl")
+      .populate("userID", "nickname")
+      .sort({ createdAt: -1 });
 
     res.json(reviews);
   } catch (error) {
@@ -42,14 +42,24 @@ const writeReview = async (req, res) => {
       return res.status(404).json({ message: "Album not found" });
     }
 
+    // Check if user has already reviewed this album
+    const existingReview = await Review.findOne({ userID: req.user.id, albumID });
+    if (existingReview) {
+      return res.status(400).json({ message: "You have already reviewed this album" });
+    }
+
     const review = await Review.create({
       albumID,
       userID: req.user.id,
       reviewRate,
-      reviewContent
+      reviewContent,
     });
 
-    res.status(201).json(review);
+    const populatedReview = await Review.findById(review._id)
+      .populate("albumID", "title artist coverImageUrl")
+      .populate("userID", "nickname");
+
+    res.status(201).json(populatedReview);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -84,7 +94,11 @@ const updateReview = async (req, res) => {
 
     await review.save(); // Update at auto update time
 
-    res.json(review);
+    const populatedReview = await Review.findById(review._id)
+      .populate("albumID", "title artist coverImageUrl")
+      .populate("userID", "nickname");
+
+    res.json(populatedReview);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -121,8 +135,8 @@ const deleteReview = async (req, res) => {
 };
 
 module.exports = {
-  getReviewDetails,
+  getMyReviews,
   writeReview,
   updateReview,
-  deleteReview
+  deleteReview,
 };
