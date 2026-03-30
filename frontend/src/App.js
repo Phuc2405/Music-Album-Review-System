@@ -1,13 +1,12 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Tasks from './pages/Tasks'
-import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
-import RedirectIfLoggedIn from './components/RedirectIfLoggedIn';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Reviews from "./pages/Reviews";
 
-
+import RedirectIfLoggedIn from "./components/RedirectIfLoggedIn";
 
 function App() {
   return (
@@ -19,10 +18,11 @@ function App() {
             path="/"
             element={
               <ProtectedRoute>
-              <Tasks />
+                <Reviews />
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/login"
             element={
@@ -31,6 +31,7 @@ function App() {
               </RedirectIfLoggedIn>
             }
           />
+
           <Route
             path="/register"
             element={
