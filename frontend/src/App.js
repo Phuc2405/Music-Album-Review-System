@@ -7,7 +7,7 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import RedirectIfLoggedIn from './components/RedirectIfLoggedIn';
 
-import RedirectIfLoggedIn from './components/RedirectIfLoggedIn';
+
 
 function App() {
   return (
