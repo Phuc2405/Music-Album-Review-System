@@ -12,8 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/api/auth', require('./routes/authRoutes'));
-//albumRoutes connect with server.js
-app.use("/api/albums", require("./routes/albumRoutes"));
+
 // Export the app object for testing
 if (require.main === module) {
     connectDB();
