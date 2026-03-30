@@ -2,10 +2,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Home from './pages/Home';
-import SearchAlbumResults from './pages/SearchAlbumResults';
+import Tasks from './pages/Tasks'
 import { AuthProvider } from './context/AuthContext';
-import AlbumDetails from './pages/AlbumDetails';
+import ProtectedRoute from './components/ProtectedRoute';
+import RedirectIfLoggedIn from './components/RedirectIfLoggedIn';
 
 import RedirectIfLoggedIn from './components/RedirectIfLoggedIn';
 
@@ -15,8 +15,14 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+              <Tasks />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/login"
             element={
@@ -25,7 +31,6 @@ function App() {
               </RedirectIfLoggedIn>
             }
           />
-
           <Route
             path="/register"
             element={
@@ -34,9 +39,6 @@ function App() {
               </RedirectIfLoggedIn>
             }
           />
-
-          <Route path="/search" element={<SearchAlbumResults />} />
-          <Route path="/album/:id" element={<AlbumDetails />} />
         </Routes>
       </Router>
     </AuthProvider>
