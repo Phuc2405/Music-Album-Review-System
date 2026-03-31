@@ -18,7 +18,7 @@ export default function AdminRoute({ children }) {
         replace
         state={{
           notice:
-            "Access denied: Admins only. You have been redirected to Homepage.",
+            "Access denied: Admins only. You have been redirected to home.",
         }}
       />
     );

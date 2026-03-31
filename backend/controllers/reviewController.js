@@ -43,9 +43,14 @@ const writeReview = async (req, res) => {
     }
 
     // Check if user has already reviewed this album
-    const existingReview = await Review.findOne({ userID: req.user.id, albumID });
+    const existingReview = await Review.findOne({
+      userID: req.user.id,
+      albumID,
+    });
     if (existingReview) {
-      return res.status(400).json({ message: "You have already reviewed this album" });
+      return res
+        .status(400)
+        .json({ message: "You have already reviewed this album" });
     }
 
     const review = await Review.create({
@@ -98,7 +103,7 @@ const updateReview = async (req, res) => {
       .populate("albumID", "title artist coverImageUrl")
       .populate("userID", "nickname");
 
-    res.json(populatedReview);
+    res.status(200).json(populatedReview);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -128,7 +133,20 @@ const deleteReview = async (req, res) => {
 
     await review.deleteOne();
 
-    res.json({ message: "Review deleted successfully" });
+    res.status(200).json({ message: "Review deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getAllReviews = async (req, res) => {
+  try {
+    const reviews = await Review.find()
+      .populate("albumID", "title artist coverImageUrl")
+      .populate("userID", "nickname email type")
+      .sort({ createdAt: -1 });
+
+    res.json(reviews);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -139,4 +157,5 @@ module.exports = {
   writeReview,
   updateReview,
   deleteReview,
+  getAllReviews,
 };

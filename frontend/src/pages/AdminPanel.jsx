@@ -100,7 +100,7 @@ if (loading) {
                     {r.reviewContent}
                   </td>
                   <td className="p-2">
-                    {new Date(r.reviewDate || r.createdAt).toLocaleString()}
+                    {new Date(r.updateAt || r.reviewDate).toLocaleString()}
                   </td>
                   <td className="p-2">
                     <button

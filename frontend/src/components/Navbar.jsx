@@ -3,7 +3,6 @@ import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const token = localStorage.getItem("token");
-  // Lấy thêm 'user' từ AuthContext để kiểm tra user type
   const { logout, user } = useAuth();
   const navigate = useNavigate();
 
