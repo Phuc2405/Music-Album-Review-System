@@ -4,8 +4,9 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
 import Reviews from "./pages/Reviews";
-
+import AdminPanel from "./pages/AdminPanel";
 import RedirectIfLoggedIn from "./components/RedirectIfLoggedIn";
 
 function App() {
@@ -22,7 +23,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/login"
             element={
@@ -31,13 +31,20 @@ function App() {
               </RedirectIfLoggedIn>
             }
           />
-
           <Route
             path="/register"
             element={
               <RedirectIfLoggedIn>
                 <Register />
               </RedirectIfLoggedIn>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminPanel />
+              </AdminRoute>
             }
           />
         </Routes>

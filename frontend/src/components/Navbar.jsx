@@ -3,9 +3,8 @@ import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const token = localStorage.getItem("token");
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const navigate = useNavigate();
-
 
   const handleLogout = () => {
     logout();
@@ -24,12 +23,23 @@ const Navbar = () => {
       {/* User Authentication */}
       <div className="flex items-center gap-3">
         {token ? (
-          <button
-            onClick={handleLogout}
-            className="bg-red-500/10 text-red-500 border border-red-500/20 px-6 py-2.5 rounded-xl font-bold hover:bg-red-500 hover:text-white transition-all active:scale-95"
-          >
-            Logout
-          </button>
+          <>
+            {user?.type === "admin" && (
+              <Link
+                to="/admin"
+                className="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-6 py-2.5 rounded-xl font-bold hover:bg-blue-500 hover:text-white transition-all active:scale-95"
+              >
+                Admin Panel
+              </Link>
+            )}
+
+            <button
+              onClick={handleLogout}
+              className="bg-red-500/10 text-red-500 border border-red-500/20 px-6 py-2.5 rounded-xl font-bold hover:bg-red-500 hover:text-white transition-all active:scale-95"
+            >
+              Logout
+            </button>
+          </>
         ) : (
           <>
             <Link
