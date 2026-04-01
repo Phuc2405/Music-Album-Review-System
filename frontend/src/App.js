@@ -4,8 +4,9 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
 import Reviews from "./pages/Reviews";
-
+import AdminPanel from "./pages/AdminPanel";
 import RedirectIfLoggedIn from "./components/RedirectIfLoggedIn";
 
 function App() {
