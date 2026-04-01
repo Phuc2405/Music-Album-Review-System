@@ -12,37 +12,37 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-          <div className="flex flex-col min-h-screen">      
-        <Navbar />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Reviews />
-              </ProtectedRoute>
-            }
-          />
+        <div className="flex flex-col min-h-screen">      
+          <Navbar />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Reviews />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/login"
-            element={
-              <RedirectIfLoggedIn>
-                <Login />
-              </RedirectIfLoggedIn>
-            }
-          />
+            <Route
+              path="/login"
+              element={
+                <RedirectIfLoggedIn>
+                  <Login />
+                </RedirectIfLoggedIn>
+              }
+            />
 
-          <Route
-            path="/register"
-            element={
-              <RedirectIfLoggedIn>
-                <Register />
-              </RedirectIfLoggedIn>
-            }
-          />
-          </Routes>
-        </div>
+            <Route
+              path="/register"
+              element={
+                <RedirectIfLoggedIn>
+                  <Register />
+                </RedirectIfLoggedIn>
+              }
+            />
+            </Routes>
+         </div>
       </Router>
     </AuthProvider>
   );
