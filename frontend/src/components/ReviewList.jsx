@@ -45,10 +45,10 @@ const ReviewList = ({ reviews, setReviews, setEditingReview }) => {
                     {review.albumID.artist}
                   </p>
                 </div>
-                <span className="text-xs text-gray-600 uppercase font-bold tracking-widest whitespace-nowrap ml-4">
+                <span className="text-xs text-gray-600 font-bold whitespace-nowrap ml-4">
                   {new Date(
-                    review.reviewDate || review.createdAt,
-                  ).toLocaleDateString()}
+                    review.updateAt || review.reviewDate,
+                  ).toLocaleString()}
                 </span>
               </div>
 
@@ -57,7 +57,16 @@ const ReviewList = ({ reviews, setReviews, setEditingReview }) => {
                 {"☆".repeat(5 - review.reviewRate)}
               </div>
 
-              <p className="text-gray-300 leading-relaxed italic mb-4 flex-1 overflow-hidden text-ellipsis whitespace-pre-wrap max-h-24" style={{ overflowWrap: 'break-word',display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+              <p
+                className="text-gray-300 leading-relaxed italic mb-4 flex-1 overflow-hidden text-ellipsis whitespace-pre-wrap max-h-24"
+                style={{
+                  overflowWrap: "break-word",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                }}
+              >
                 "{review.reviewContent}"
               </p>
               <div className="flex gap-4 justify-end mt-auto border-t border-gray-800/50 pt-4">

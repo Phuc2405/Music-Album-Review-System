@@ -12,6 +12,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+          <div className="flex flex-col min-h-screen">      
         <Navbar />
         <Routes>
           <Route
@@ -40,7 +41,8 @@ function App() {
               </RedirectIfLoggedIn>
             }
           />
-        </Routes>
+          </Routes>
+        </div>
       </Router>
     </AuthProvider>
   );
