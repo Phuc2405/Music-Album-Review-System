@@ -13,7 +13,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="flex flex-col min-h-screen">      
+        <div className="flex flex-col min-h-screen">
           <Navbar />
           <Routes>
             <Route
@@ -24,7 +24,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
             <Route
               path="/login"
               element={
@@ -33,7 +32,6 @@ function App() {
                 </RedirectIfLoggedIn>
               }
             />
-
             <Route
               path="/register"
               element={
@@ -42,8 +40,16 @@ function App() {
                 </RedirectIfLoggedIn>
               }
             />
-            </Routes>
-         </div>
+            <Route
+              path="/admin"
+              element={
+                <AdminRoute>
+                  <AdminPanel />
+                </AdminRoute>
+              }
+            />
+          </Routes>
+        </div>
       </Router>
     </AuthProvider>
   );
