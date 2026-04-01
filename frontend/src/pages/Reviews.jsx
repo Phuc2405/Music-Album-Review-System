@@ -1,15 +1,25 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import axiosInstance from "../axiosConfig";
 import ReviewForm from "../components/ReviewForm";
 import ReviewList from "../components/ReviewList";
 
 const Reviews = () => {
+  const location = useLocation();
   const { user } = useAuth();
   const [reviews, setReviews] = useState([]);
   const [editingReview, setEditingReview] = useState(null);
   const [isWritingNew, setIsWritingNew] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [notice, setNotice] = useState("");
+
+  useEffect(() => {
+    if (location.state?.notice) {
+      setNotice(location.state.notice);
+      window.history.replaceState({}, document.title); // clear state so notice not shown repeatedly
+    }
+  }, [location.state]);
 
   // Fetch user's own reviews
   useEffect(() => {
@@ -52,10 +62,28 @@ const Reviews = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white py-12 px-4">
       <div className="w-full max-w-5xl mx-auto">
+        {user && (
+          <div className="mb-6 flex justify-start">
+            <p className="text-xl text-gray-300 font-medium tracking-wide">
+              Hi,{" "}
+              <span className="text-orange-400 font-bold">
+                {user.nickname || "there"}
+              </span>{" "}
+              !
+            </p>
+          </div>
+        )}
+        {/* Notification */}
+        {notice && (
+          <div className="mb-6 bg-red-600/20 border border-red-500 rounded-lg p-4 text-red-100">
+            <p className="font-semibold">{notice}</p>
+          </div>
+        )}
+
         {/* Page Header */}
         <div className="mb-12 text-center">
           <h1 className="text-4xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-400">
-            Music Reviews
+            Music Review
           </h1>
           <p className="text-gray-400">
             Share your thoughts on your favorite albums
