@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react"; // Added useCallback
 import { useAuth } from "../context/AuthContext";
 import axiosInstance from "../axiosConfig";
 
@@ -44,7 +44,9 @@ function AdminPanel() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchReviews = async () => {
+  // Fix: Wrap fetchReviews in useCallback to prevent infinite loops
+  // and satisfy the dependency requirements.
+  const fetchReviews = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -52,7 +54,7 @@ function AdminPanel() {
         headers: { Authorization: `Bearer ${user?.token}` },
       });
 
-      // Sort reviews by the most recent first (based on updateAt or reviewDate)
+      // Sort reviews by the most recent first
       const sortedReviews = (response.data || []).sort((a, b) => {
         const dateA = new Date(a.updateAt || a.reviewDate);
         const dateB = new Date(b.updateAt || b.reviewDate);
@@ -67,7 +69,7 @@ function AdminPanel() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.token]); // Function updates only if the user token changes
 
   const handleDelete = async (reviewID) => {
     if (!window.confirm("Are you sure you want to delete this review?")) return;
@@ -81,11 +83,12 @@ function AdminPanel() {
     }
   };
 
+  // Now you can safely include fetchReviews in the dependency array
   useEffect(() => {
     fetchReviews();
-  }, []);
+  }, [fetchReviews]);
 
-  // Format Date to match your Review Screen: M/D/YYYY, H:MM:SS AM/PM
+  // Format Date utility
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
