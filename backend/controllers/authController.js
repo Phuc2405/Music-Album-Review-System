@@ -3,11 +3,16 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+  const secret = process.env.JWT_SECRET || "defaultsecret";
+  return jwt.sign({ id }, secret, { expiresIn: "30d" });
 };
 
 // REGISTER
 const registerUser = async (req, res) => {
+  if (req.user) {
+    return res.status(400).json({ message: "Already logged in" });
+  }
+
   const { nickname, email, password, confirmPassword, type } = req.body;
 
   try {
@@ -46,6 +51,10 @@ const registerUser = async (req, res) => {
 
 // LOGIN
 const loginUser = async (req, res) => {
+  if (req.user) {
+    return res.status(400).json({ message: "Already logged in" });
+  }
+
   const { email, password } = req.body;
 
   try {
