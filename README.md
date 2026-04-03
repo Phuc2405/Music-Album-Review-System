@@ -13,8 +13,8 @@ To quickly test the application, you can use the following pre-configured accoun
 * **Password:** `123`
 
 **User Accounts:**
-* **Email:** `felix123@gmail.com` | **Password:** `123`
-* **Email:** `sticky_rice@gmail.com` | **Password:** `123`
+* **Email:** `felix123@gmail.com` | **Password:** `123` (this account has 9 reviews)
+* **Email:** `felix2405@gmail.com` | **Password:** `123` (this account has no review)
 
 ---
 
@@ -63,7 +63,7 @@ To quickly test the application, you can use the following pre-configured accoun
 
 ### **3. Admin Authority**
 * **Full CRUD:** Admins have the same capabilities as users regarding their own content.
-* **Moderation:** Admins have exclusive access to the **Admin Panel**, allowing them to view all user reviews and delete any invalid or inappropriate content.
+* **Review Moderation:** Admins have exclusive access to the **Admin Panel**, allowing them to view all user reviews and delete any invalid or inappropriate content.
 
 ---
 
