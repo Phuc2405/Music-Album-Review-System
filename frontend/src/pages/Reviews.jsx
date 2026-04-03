@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import axiosInstance from "../axiosConfig";
@@ -14,17 +14,19 @@ const Reviews = () => {
   const [loading, setLoading] = useState(true);
   const [notice, setNotice] = useState("");
 
+  // 1. Create a ref to anchor the form location for smooth scrolling
+  const formSectionRef = useRef(null);
+
   useEffect(() => {
     if (location.state?.notice) {
       setNotice(location.state.notice);
-      window.history.replaceState({}, document.title); // clear state so notice not shown repeatedly
+      window.history.replaceState({}, document.title);
     }
   }, [location.state]);
 
-  // Fetch user's own reviews
+  // Fetch user's own reviews and sort them by newest first
   useEffect(() => {
     if (!user?.token) return;
-
     let isMounted = true;
 
     const fetchReviews = async () => {
@@ -32,8 +34,13 @@ const Reviews = () => {
         const response = await axiosInstance.get("/api/reviews", {
           headers: { Authorization: `Bearer ${user.token}` },
         });
+
         if (isMounted) {
-          setReviews(response.data || []);
+          // SORTING LOGIC: Newest date at the top
+          const sortedData = (response.data || []).sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+          });
+          setReviews(sortedData);
         }
       } catch (error) {
         if (isMounted) {
@@ -48,15 +55,39 @@ const Reviews = () => {
     };
 
     fetchReviews();
-
     return () => {
       isMounted = false;
     };
   }, [user?.token]);
 
+  // 2. Function to handle smooth scrolling
+  const scrollToForm = () => {
+    // Timeout ensures the DOM has rendered the form before scrolling
+    setTimeout(() => {
+      formSectionRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 100);
+  };
+
   const handleCancelEdit = () => {
     setEditingReview(null);
     setIsWritingNew(false);
+  };
+
+  // 3. Triggered when clicking "+ Write a Review"
+  const handleWriteNewClick = () => {
+    setIsWritingNew(true);
+    setEditingReview(null);
+    scrollToForm();
+  };
+
+  // 4. Triggered when clicking "Edit" in ReviewList
+  const handleEditClick = (review) => {
+    setEditingReview(review);
+    setIsWritingNew(false);
+    scrollToForm();
   };
 
   return (
@@ -68,12 +99,12 @@ const Reviews = () => {
               Hi,{" "}
               <span className="text-orange-400 font-bold">
                 {user.nickname || "there"}
-              </span>{" "}
+              </span>
               !
             </p>
           </div>
         )}
-        {/* Notification */}
+
         {notice && (
           <div className="mb-6 bg-red-600/20 border border-red-500 rounded-lg p-4 text-red-100">
             <p className="font-semibold">{notice}</p>
@@ -83,7 +114,7 @@ const Reviews = () => {
         {/* Page Header */}
         <div className="mb-12 text-center">
           <h1 className="text-4xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-400">
-            Music Review
+            Music Reviews
           </h1>
           <p className="text-gray-400">
             Share your thoughts on your favorite albums
@@ -94,7 +125,7 @@ const Reviews = () => {
         {user && !isWritingNew && !editingReview && (
           <div className="mb-8 flex justify-center">
             <button
-              onClick={() => setIsWritingNew(true)}
+              onClick={handleWriteNewClick}
               className="bg-orange-500 hover:bg-orange-400 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg shadow-orange-500/20 active:scale-95"
             >
               + Write a Review
@@ -102,18 +133,20 @@ const Reviews = () => {
           </div>
         )}
 
-        {/* Review Form Section */}
-        {(isWritingNew || editingReview) && (
-          <div className="mb-12">
-            <ReviewForm
-              reviews={reviews}
-              setReviews={setReviews}
-              editingReview={editingReview}
-              setEditingReview={setEditingReview}
-              onFormClose={handleCancelEdit}
-            />
-          </div>
-        )}
+        {/* 5. Ref used to scroll back to form for editing or writing */}
+        <div ref={formSectionRef}>
+          {(isWritingNew || editingReview) && (
+            <div className="mb-12">
+              <ReviewForm
+                reviews={reviews}
+                setReviews={setReviews}
+                editingReview={editingReview}
+                setEditingReview={setEditingReview}
+                onFormClose={handleCancelEdit}
+              />
+            </div>
+          )}
+        </div>
 
         {/* Reviews List Section */}
         <div>
@@ -126,10 +159,7 @@ const Reviews = () => {
             <ReviewList
               reviews={reviews}
               setReviews={setReviews}
-              setEditingReview={(review) => {
-                setEditingReview(review);
-                setIsWritingNew(false);
-              }}
+              setEditingReview={handleEditClick}
             />
           )}
         </div>
